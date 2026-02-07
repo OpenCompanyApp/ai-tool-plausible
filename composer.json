@@ -1,0 +1,31 @@
+{
+    "name": "opencompanyapp/ai-tool-plausible",
+    "description": "Plausible Analytics AI tool for Laravel AI SDK — query stats, realtime visitors, manage sites and goals. Part of the OpenCompany AI tool ecosystem.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "OpenCompany",
+            "homepage": "https://github.com/OpenCompanyApp"
+        }
+    ],
+    "keywords": ["laravel", "ai", "tools", "plausible", "analytics", "opencompany"],
+    "require": {
+        "php": "^8.2",
+        "opencompanyapp/ai-tool-core": "^1.0 || @dev",
+        "laravel/ai": "^0.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "OpenCompany\\AiToolPlausible\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "OpenCompany\\AiToolPlausible\\AiToolPlausibleServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
