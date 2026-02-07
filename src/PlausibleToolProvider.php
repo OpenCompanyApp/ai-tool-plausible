@@ -4,8 +4,8 @@ namespace OpenCompany\AiToolPlausible;
 
 use Illuminate\Support\Facades\Http;
 use Laravel\Ai\Contracts\Tool;
-use OpenCompany\AiToolCore\Contracts\ConfigurableIntegration;
-use OpenCompany\AiToolCore\Contracts\ToolProvider;
+use OpenCompany\IntegrationCore\Contracts\ConfigurableIntegration;
+use OpenCompany\IntegrationCore\Contracts\ToolProvider;
 use OpenCompany\AiToolPlausible\Tools\PlausibleCreateGoal;
 use OpenCompany\AiToolPlausible\Tools\PlausibleCreateSite;
 use OpenCompany\AiToolPlausible\Tools\PlausibleDeleteGoal;

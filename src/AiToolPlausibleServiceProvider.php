@@ -3,8 +3,8 @@
 namespace OpenCompany\AiToolPlausible;
 
 use Illuminate\Support\ServiceProvider;
-use OpenCompany\AiToolCore\Contracts\CredentialResolver;
-use OpenCompany\AiToolCore\Support\ToolProviderRegistry;
+use OpenCompany\IntegrationCore\Contracts\CredentialResolver;
+use OpenCompany\IntegrationCore\Support\ToolProviderRegistry;
 
 class AiToolPlausibleServiceProvider extends ServiceProvider
 {

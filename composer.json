@@ -11,7 +11,7 @@
     "keywords": ["laravel", "ai", "tools", "plausible", "analytics", "opencompany"],
     "require": {
         "php": "^8.2",
-        "opencompanyapp/ai-tool-core": "^1.0 || @dev",
+        "opencompanyapp/integration-core": "^2.0 || @dev",
         "laravel/ai": "^0.1"
     },
     "autoload": {
