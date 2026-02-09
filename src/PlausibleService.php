@@ -146,7 +146,7 @@ class PlausibleService
             };
 
             if (!$response->successful()) {
-                $contentType = $response->header('Content-Type') ?? '';
+                $contentType = $response->header('Content-Type');
                 $body = $response->body();
 
                 if (str_contains($contentType, 'text/html') || str_starts_with(trim($body), '<!DOCTYPE')) {
