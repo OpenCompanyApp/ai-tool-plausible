@@ -36,7 +36,8 @@ class PlausibleQueryStats implements Tool
             }
 
             if (isset($request['filters'])) {
-                $body['filters'] = $request['filters'];
+                $filters = $request['filters'];
+                $body['filters'] = is_string($filters) ? json_decode($filters, true) : $filters;
             }
 
             if ($request['dateRange'] === 'custom') {
@@ -48,7 +49,8 @@ class PlausibleQueryStats implements Tool
             }
 
             if (isset($request['orderBy'])) {
-                $body['order_by'] = $request['orderBy'];
+                $orderBy = $request['orderBy'];
+                $body['order_by'] = is_string($orderBy) ? json_decode($orderBy, true) : $orderBy;
             }
 
             if (isset($request['limit'])) {
@@ -72,6 +74,7 @@ class PlausibleQueryStats implements Tool
                 ->required(),
             'metrics' => $schema
                 ->array()
+                ->items($schema->string())
                 ->description('Metrics to retrieve: visitors, pageviews, visits, bounce_rate, visit_duration, views_per_visit, events, conversion_rate.')
                 ->required(),
             'dateRange' => $schema
@@ -80,10 +83,11 @@ class PlausibleQueryStats implements Tool
                 ->required(),
             'dimensions' => $schema
                 ->array()
+                ->items($schema->string())
                 ->description('Dimensions to group by: visit:source, visit:country, visit:city, visit:device, visit:browser, visit:os, event:page, event:name, time:day, time:month, etc.'),
             'filters' => $schema
-                ->array()
-                ->description('Filter expressions as nested arrays, e.g., [["is", "visit:country", ["NL"]]].'),
+                ->string()
+                ->description('JSON-encoded filter expressions, e.g., [["is", "visit:country", ["NL"]]]. Pass as a JSON string.'),
             'dateFrom' => $schema
                 ->string()
                 ->description('Start date (ISO 8601, e.g., "2025-01-01") when dateRange is "custom".'),
@@ -91,8 +95,8 @@ class PlausibleQueryStats implements Tool
                 ->string()
                 ->description('End date (ISO 8601, e.g., "2025-01-31") when dateRange is "custom".'),
             'orderBy' => $schema
-                ->array()
-                ->description('Order results, e.g., [["visitors", "desc"]].'),
+                ->string()
+                ->description('JSON-encoded order, e.g., [["visitors", "desc"]]. Pass as a JSON string.'),
             'limit' => $schema
                 ->integer()
                 ->description('Maximum number of results to return. Sent as pagination.limit (default: 10000).'),
