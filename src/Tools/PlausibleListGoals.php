@@ -25,7 +25,7 @@ class PlausibleListGoals implements Tool
                 return 'Error: Plausible integration is not configured.';
             }
 
-            $result = $this->service->listGoals($request['site_id']);
+            $result = $this->service->listGoals($request['siteId']);
 
             return json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         } catch (\Throwable $e) {
@@ -36,7 +36,7 @@ class PlausibleListGoals implements Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'site_id' => $schema
+            'siteId' => $schema
                 ->string()
                 ->description('The site domain (e.g., "example.com").')
                 ->required(),

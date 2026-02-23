@@ -25,9 +25,9 @@ class PlausibleDeleteSite implements Tool
                 return 'Error: Plausible integration is not configured.';
             }
 
-            $this->service->deleteSite($request['site_id']);
+            $this->service->deleteSite($request['siteId']);
 
-            return "Site '{$request['site_id']}' has been deleted. Data removal may take up to 48 hours.";
+            return "Site '{$request['siteId']}' has been deleted. Data removal may take up to 48 hours.";
         } catch (\Throwable $e) {
             return "Error deleting site: {$e->getMessage()}";
         }
@@ -36,7 +36,7 @@ class PlausibleDeleteSite implements Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'site_id' => $schema
+            'siteId' => $schema
                 ->string()
                 ->description('The site domain to delete (e.g., "example.com").')
                 ->required(),

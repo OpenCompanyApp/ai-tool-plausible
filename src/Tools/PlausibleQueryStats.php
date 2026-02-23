@@ -26,9 +26,9 @@ class PlausibleQueryStats implements Tool
             }
 
             $body = [
-                'site_id' => $request['site_id'],
+                'site_id' => $request['siteId'],
                 'metrics' => $request['metrics'],
-                'date_range' => $request['date_range'],
+                'date_range' => $request['dateRange'],
             ];
 
             if (isset($request['dimensions'])) {
@@ -40,16 +40,16 @@ class PlausibleQueryStats implements Tool
                 $body['filters'] = is_string($filters) ? json_decode($filters, true) : $filters;
             }
 
-            if ($request['date_range'] === 'custom') {
-                if (isset($request['date_from']) && isset($request['date_to'])) {
-                    $body['date_range'] = [$request['date_from'], $request['date_to']];
+            if ($request['dateRange'] === 'custom') {
+                if (isset($request['dateFrom']) && isset($request['dateTo'])) {
+                    $body['date_range'] = [$request['dateFrom'], $request['dateTo']];
                 } else {
-                    return 'Error: date_from and date_to are required when date_range is "custom".';
+                    return 'Error: dateFrom and dateTo are required when dateRange is "custom".';
                 }
             }
 
-            if (isset($request['order_by'])) {
-                $orderBy = $request['order_by'];
+            if (isset($request['orderBy'])) {
+                $orderBy = $request['orderBy'];
                 $body['order_by'] = is_string($orderBy) ? json_decode($orderBy, true) : $orderBy;
             }
 
@@ -68,7 +68,7 @@ class PlausibleQueryStats implements Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'site_id' => $schema
+            'siteId' => $schema
                 ->string()
                 ->description('The site domain (e.g., "example.com").')
                 ->required(),
@@ -77,9 +77,9 @@ class PlausibleQueryStats implements Tool
                 ->items($schema->string())
                 ->description('Metrics to retrieve: visitors, pageviews, visits, bounce_rate, visit_duration, views_per_visit, events, conversion_rate.')
                 ->required(),
-            'date_range' => $schema
+            'dateRange' => $schema
                 ->string()
-                ->description('Time period: "7d", "28d", "30d", "month", "3mo", "6mo", "12mo", or "custom" (requires date_from/date_to).')
+                ->description('Time period: "7d", "28d", "30d", "month", "3mo", "6mo", "12mo", or "custom" (requires dateFrom/dateTo).')
                 ->required(),
             'dimensions' => $schema
                 ->array()
@@ -88,13 +88,13 @@ class PlausibleQueryStats implements Tool
             'filters' => $schema
                 ->string()
                 ->description('JSON-encoded filter expressions, e.g., [["is", "visit:country", ["NL"]]]. Pass as a JSON string.'),
-            'date_from' => $schema
+            'dateFrom' => $schema
                 ->string()
-                ->description('Start date (ISO 8601, e.g., "2025-01-01") when date_range is "custom".'),
-            'date_to' => $schema
+                ->description('Start date (ISO 8601, e.g., "2025-01-01") when dateRange is "custom".'),
+            'dateTo' => $schema
                 ->string()
-                ->description('End date (ISO 8601, e.g., "2025-01-31") when date_range is "custom".'),
-            'order_by' => $schema
+                ->description('End date (ISO 8601, e.g., "2025-01-31") when dateRange is "custom".'),
+            'orderBy' => $schema
                 ->string()
                 ->description('JSON-encoded order, e.g., [["visitors", "desc"]]. Pass as a JSON string.'),
             'limit' => $schema

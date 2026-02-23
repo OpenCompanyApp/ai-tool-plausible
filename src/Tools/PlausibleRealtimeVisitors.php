@@ -25,11 +25,11 @@ class PlausibleRealtimeVisitors implements Tool
                 return 'Error: Plausible integration is not configured.';
             }
 
-            $count = $this->service->realtimeVisitors($request['site_id']);
+            $count = $this->service->realtimeVisitors($request['siteId']);
 
             return json_encode([
-                'site_id' => $request['site_id'],
-                'realtime_visitors' => $count,
+                'siteId' => $request['siteId'],
+                'realtimeVisitors' => $count,
             ], JSON_PRETTY_PRINT);
         } catch (\Throwable $e) {
             return "Error getting realtime visitors: {$e->getMessage()}";
@@ -39,7 +39,7 @@ class PlausibleRealtimeVisitors implements Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'site_id' => $schema
+            'siteId' => $schema
                 ->string()
                 ->description('The site domain (e.g., "example.com").')
                 ->required(),
