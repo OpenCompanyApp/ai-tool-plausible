@@ -25,9 +25,9 @@ class PlausibleDeleteGoal implements Tool
                 return 'Error: Plausible integration is not configured.';
             }
 
-            $this->service->deleteGoal($request['siteId'], (int) $request['goalId']);
+            $this->service->deleteGoal($request['site_id'], (int) $request['goal_id']);
 
-            return "Goal {$request['goalId']} has been deleted from site '{$request['siteId']}'.";
+            return "Goal {$request['goal_id']} has been deleted from site '{$request['site_id']}'.";
         } catch (\Throwable $e) {
             return "Error deleting goal: {$e->getMessage()}";
         }
@@ -36,11 +36,11 @@ class PlausibleDeleteGoal implements Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'siteId' => $schema
+            'site_id' => $schema
                 ->string()
                 ->description('The site domain (e.g., "example.com").')
                 ->required(),
-            'goalId' => $schema
+            'goal_id' => $schema
                 ->integer()
                 ->description('The ID of the goal to delete.')
                 ->required(),

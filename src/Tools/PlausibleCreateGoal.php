@@ -26,17 +26,17 @@ class PlausibleCreateGoal implements Tool
             }
 
             $goal = [];
-            if (isset($request['eventName'])) {
+            if (isset($request['event_name'])) {
                 $goal['goal_type'] = 'event';
-                $goal['event_name'] = $request['eventName'];
-            } elseif (isset($request['pagePath'])) {
+                $goal['event_name'] = $request['event_name'];
+            } elseif (isset($request['page_path'])) {
                 $goal['goal_type'] = 'page';
-                $goal['page_path'] = $request['pagePath'];
+                $goal['page_path'] = $request['page_path'];
             } else {
-                return 'Error: Either eventName or pagePath is required.';
+                return 'Error: Either event_name or page_path is required.';
             }
 
-            $result = $this->service->createGoal($request['siteId'], $goal);
+            $result = $this->service->createGoal($request['site_id'], $goal);
 
             return "Goal created successfully.\n" . json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         } catch (\Throwable $e) {
@@ -47,16 +47,16 @@ class PlausibleCreateGoal implements Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'siteId' => $schema
+            'site_id' => $schema
                 ->string()
                 ->description('The site domain (e.g., "example.com").')
                 ->required(),
-            'eventName' => $schema
+            'event_name' => $schema
                 ->string()
-                ->description('Custom event name to track (e.g., "Signup"). Use this OR pagePath, not both.'),
-            'pagePath' => $schema
+                ->description('Custom event name to track (e.g., "Signup"). Use this OR page_path, not both.'),
+            'page_path' => $schema
                 ->string()
-                ->description('Page path to track visits to (e.g., "/thank-you"). Use this OR eventName, not both.'),
+                ->description('Page path to track visits to (e.g., "/thank-you"). Use this OR event_name, not both.'),
         ];
     }
 }
