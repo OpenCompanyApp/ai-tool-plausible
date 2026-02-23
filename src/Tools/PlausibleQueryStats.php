@@ -59,10 +59,59 @@ class PlausibleQueryStats implements Tool
 
             $result = $this->service->query($body);
 
-            return json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+            return $this->formatResponse($result);
         } catch (\Throwable $e) {
             return "Error querying Plausible stats: {$e->getMessage()}";
         }
+    }
+
+    /**
+     * @param  array<string, mixed>  $result
+     */
+    private function formatResponse(array $result): string
+    {
+        $query = $result['query'] ?? [];
+        $metricNames = $query['metrics'] ?? [];
+        $dimensionNames = $query['dimensions'] ?? [];
+        $results = $result['results'] ?? [];
+        $meta = $result['meta'] ?? [];
+
+        $rows = array_map(function (array $row) use ($metricNames, $dimensionNames) {
+            $entry = [];
+            foreach ($dimensionNames as $i => $dim) {
+                $entry[$dim] = $row['dimensions'][$i] ?? null;
+            }
+            foreach ($metricNames as $i => $metric) {
+                $val = $row['metrics'][$i] ?? null;
+                if (is_array($val)) {
+                    $entry[$metric] = $val;
+                } elseif (is_numeric($val)) {
+                    $entry[$metric] = str_contains((string) $val, '.') ? (float) $val : (int) $val;
+                } else {
+                    $entry[$metric] = $val;
+                }
+            }
+
+            return $entry;
+        }, $results);
+
+        $response = [];
+
+        if (isset($query['date_range'])) {
+            $response['dateRange'] = $query['date_range'];
+        }
+        if (! empty($dimensionNames)) {
+            $response['dimensions'] = $dimensionNames;
+        }
+        $response['metrics'] = $metricNames;
+        $response['rows'] = $rows;
+        $response['rowCount'] = count($rows);
+
+        if (isset($meta['total_rows'])) {
+            $response['totalRows'] = $meta['total_rows'];
+        }
+
+        return json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     }
 
     public function schema(JsonSchema $schema): array
